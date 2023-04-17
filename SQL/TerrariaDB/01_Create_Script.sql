@@ -11,8 +11,9 @@ use [Terraria]
 GO
 
 CREATE TABLE Rarity (
-	Id int PRIMARY KEY IDENTITY,
+	Id int PRIMARY KEY IDENTITY(-1, 1),
 	[Label] nvarchar(25),
+	--Possibly add description
 
 	CONSTRAINT [UQ_Rarity_Label] UNIQUE([Label])
 )
@@ -23,6 +24,13 @@ CREATE TABLE GameStage (
 	IsHardmode bit,
 
 	CONSTRAINT [UQ_GameStage_Label] UNIQUE([Label])
+)
+
+CREATE TABLE [Group] (
+	Id int PRIMARY KEY IDENTITY,
+	[Label] nvarchar(50),
+
+	CONSTRAINT [UQ_Group_Label] UNIQUE([Label])
 )
 
 CREATE TABLE Item (
@@ -36,11 +44,13 @@ CREATE TABLE Item (
 	ImageUrl nvarchar(200),
 	RarityId int,
 	GameStageId int,
+	GroupId int,
 
 	CONSTRAINT [UQ_Item_Name] UNIQUE([Name]),
 	CONSTRAINT [UQ_Item_InternalName] UNIQUE([InternalName]),
 	CONSTRAINT [FK_Item_RarityId] FOREIGN KEY (RarityId) REFERENCES Rarity(Id),
-	CONSTRAINT [FK_Item_GameStageId] FOREIGN KEY (GameStageId) REFERENCES GameStage(Id)
+	CONSTRAINT [FK_Item_GameStageId] FOREIGN KEY (GameStageId) REFERENCES GameStage(Id),
+	CONSTRAINT [FK_Item_GroupId] FOREIGN KEY (GroupId) REFERENCES [Group](Id)
 )
 
 CREATE TABLE [Type] (
@@ -66,6 +76,13 @@ CREATE TABLE ToolType (
 	CONSTRAINT [UQ_ToolType_Label] UNIQUE([Label])
 )
 
+CREATE TABLE DamageType (
+	Id int PRIMARY KEY IDENTITY,
+	[Label] nvarchar(50),
+
+	CONSTRAINT [UQ_DamageType_Label] UNIQUE([Label])
+)
+
 CREATE TABLE Tool (
 	Id int PRIMARY KEY IDENTITY,
 	HammerPower int,
@@ -76,9 +93,11 @@ CREATE TABLE Tool (
 	UseTime int,
 	MiningSpeed int,
 	Knockback dec(18, 2),
-	ItemId int,
+	DamageTypeId int,
 	ToolTypeId int,
+	ItemId int,
 
+	CONSTRAINT [FK_Tool_DamageType] FOREIGN KEY (DamageTypeId) REFERENCES DamageType(Id),
 	CONSTRAINT [FK_Tool_ItemId] FOREIGN KEY (ItemId) REFERENCES Item(Id),
 	CONSTRAINT [FK_Tool_ToolTypeId] FOREIGN KEY (ToolTypeId) REFERENCES ToolType(Id)
 )
@@ -90,6 +109,7 @@ CREATE TABLE WeaponType (
 	CONSTRAINT [UQ_WeaponType_Label] UNIQUE([Label])
 )
 
+
 CREATE TABLE Weapon (
 	Id int PRIMARY KEY IDENTITY,
 	Damage int,
@@ -98,9 +118,11 @@ CREATE TABLE Weapon (
 	UseTime int,
 	Velocity int,
 	IsAutoSwing bit,
+	DamageTypeId int,
 	WeaponTypeId int,
 	ItemId int,
 
+	CONSTRAINT [FK_Weapon_DamageTypeId] FOREIGN KEY (DamageTypeId) REFERENCES DamageType(Id),
 	CONSTRAINT [FK_Weapon_WeaponTypeId] FOREIGN KEY (WeaponTypeId) REFERENCES WeaponType(Id),
 	CONSTRAINT [FK_Weapon_ItemId] FOREIGN KEY (ItemId) REFERENCES Item(Id)
 )
@@ -204,15 +226,22 @@ CREATE TABLE GrabBag ( --Like a lootbox or something you can open for rewards
 
 CREATE TABLE Buff (
 	Id int PRIMARY KEY IDENTITY,
+	[Name] nvarchar(50),
+	InternalName nvarchar(50),
 	Tooltip nvarchar(100),
 	Duration int, --Seconds the buff lasts
 	ImageUrl nvarchar(200),
-	IsDebuff bit
+	IsDebuff bit,
+
+	CONSTRAINT [UQ_Buff_Label] UNIQUE([Name]),
+	CONSTRAINT [UQ_Buff_InternalName] UNIQUE (InternalName)
 )
 
 CREATE TABLE Potion (
 	Id int PRIMARY KEY IDENTITY,
 	UseTime int,
+	HealthRecovered int,
+	ManaRecovered int,
 	BuffId int,
 	ItemId int,
 
