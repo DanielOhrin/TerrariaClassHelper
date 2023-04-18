@@ -10,7 +10,7 @@ GO
 use TerrariaTools
 GO
 
-CREATE TABLE Ingredient (
+CREATE TABLE Material (
 	Id int PRIMARY KEY IDENTITY,
 	[Name] nvarchar(50),
 	ImageUrl nvarchar(200),
@@ -57,9 +57,11 @@ CREATE TABLE PotionRecipe (
 CREATE TABLE PotionIngredient (
 	Id int PRIMARY KEY IDENTITY,
 	Amount int,
-	PotionRecipeId int,
 	IngredientId int,
+	PotionId int,
+	PotionRecipeId int,
 
 	CONSTRAINT [FK_PotionIngredient_PotionRecipeId] FOREIGN KEY (PotionRecipeId) REFERENCES PotionRecipe(Id),
-	CONSTRAINT [FK_PotionIngredient_IngredientId] FOREIGN KEY (IngredientId) REFERENCES Ingredient(Id)
+	CONSTRAINT [FK_PotionIngredient_IngredientId] FOREIGN KEY (IngredientId) REFERENCES Material(Id),
+	CONSTRAINT [FK_PotionIngredient_PotionId] FOREIGN KEY (PotionId) REFERENCES Potion(Id)
 )

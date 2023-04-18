@@ -1,4 +1,4 @@
-import {Potion as PotionData } from "../../modules/potions"
+import {Potion as PotionData } from "../../modules/potion"
 
 function Potion({ name }: PotionData) {
     return <></>
