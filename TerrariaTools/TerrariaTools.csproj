@@ -15,4 +15,8 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\TerrariaTools.Data\TerrariaTools.Data.csproj" />
+	</ItemGroup>
+
 </Project>
