@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace TerrariaTools.Data.Models.Generated;
+﻿namespace TerrariaTools.Data.Models.Generated;
 
 public partial class PotionIngredient
 {
