@@ -1,0 +1,10 @@
+#potions--section {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+#potions--article {
+    display: flex;
+    flex-flow: row wrap;
+}
