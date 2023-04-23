@@ -14,13 +14,31 @@ export enum PotionCategoryId {
     Misc
 }
 
-export type Potion = {
+export interface PotionData {
     id: number,
     name: string,
     imageUrl: string,
     potionCategoryId: PotionCategoryId,
     potionCategory: PotionCategory,
     potionIngredients?: []
+}
+
+export class Potion implements PotionData {
+    id
+    name
+    imageUrl
+    potionCategoryId
+    potionCategory
+    potionIngredients?
+
+    constructor(props: PotionData) {
+        this.id = props.id
+        this.name = props.name
+        this.imageUrl = props.imageUrl
+        this.potionCategoryId = props.potionCategoryId
+        this.potionCategory = props.potionCategory
+        this.potionIngredients = props.potionIngredients
+    }
 }
 
 export interface PotionCategory {

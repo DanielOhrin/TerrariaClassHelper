@@ -5,22 +5,23 @@
 // Maybe try to make a HoC because I'm sure we will have many lists of items. 
 // Have the potions be little cards with plus and minus signs on them when calculating ingredients.
 import "./potions.css"
-import { Potion as PotionData, PotionCategory } from "../../modules/types/potion"
+import { Potion, PotionCategory } from "../../modules/types/potion"
 import { useEffect, useState } from "react"
-import Potion from "./Potion"
+import PotionCard from "./PotionCard"
 import { getPotions } from "../../modules/database/potions-manager"
 
 function Potions() {
-    const [potions, setPotions]= useState<PotionData[]>([])
-    
+    const [potions, setPotions] = useState<Potion[]>([])
+
     useEffect(() => {
         getPotions().then(setPotions)
     }, [])
+    
     return (
         <section id="potions--section">
             <h2>Potions</h2>
             <article id="potions--article">
-                
+
             </article>
         </section>
     )
