@@ -1,6 +1,6 @@
 import { Button, ButtonGroup, Card, CardBody, CardTitle } from "reactstrap"
 import { Potion } from "../../modules/types/potion"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useState } from "react"
 
 interface PotionCardProps {
     potion: Potion
@@ -39,11 +39,3 @@ function PotionCard({ potion }: PotionCardProps) {
 }
 
 export default PotionCard
-
-function add() {
-
-}
-
-function subtract() {
-
-}
