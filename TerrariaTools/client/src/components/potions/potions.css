@@ -7,4 +7,32 @@
 #potions--article {
     display: flex;
     flex-flow: row wrap;
+    justify-content: center;
+}
+
+.potion--card {
+    width: 15%;
+    margin: 0.5rem 1rem;
+}
+
+.potion--img {
+    padding: 1rem;
+    max-height: 10rem;
+    max-width: 10rem;
+    align-self: center;
+}
+
+.potion--card-body {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+.potion--card--buttons {
+    margin-top: -0.5rem;
+    width: 100%;
+}
+
+.potion--card--buttons > button {
+    margin: 10px;
 }
