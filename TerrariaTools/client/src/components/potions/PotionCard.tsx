@@ -25,7 +25,7 @@ function PotionCard({ potion }: PotionCardProps) {
 
     return (
         <Card className="potion--card">
-            <img className="potion--img" src={potion.imageUrl.split('/revision')[0] + "?format=original"} alt="" />
+            <img className="potion--img" src={potion.imageUrl} alt="" />
             <CardBody className="potion--card-body">
                 <CardTitle tag="h5">{potion.name}</CardTitle>
                 <h4>{amountCrafted}</h4>
