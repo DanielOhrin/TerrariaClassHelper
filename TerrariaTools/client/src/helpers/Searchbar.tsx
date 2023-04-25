@@ -1,18 +1,21 @@
+import { ChangeEventHandler } from "react"
+
 interface SearchbarProps {
     label?: string,
-    onChange: Function,
+    onChange: ChangeEventHandler<HTMLInputElement>,
     className?: string,
-    id?: string
+    id?: string,
+    name?: string
 }
 
-function Searchbar({ label, onChange, className, id }: SearchbarProps) {
+function Searchbar({ label, onChange, className, id, name }: SearchbarProps) {
     return (
-        <div id={id} className={`searchbar${(" " + className ?? "")}`}>
+        <div id={id} className={`searchbar${className ? " " + className : ""}`}>
             {
                 label &&
-                <label htmlFor="searchbar">{label}</label>
+                <label htmlFor={name ?? "searchbar"}>{label}</label>
             }
-            <input onChange={e => onChange(e)} type="text" name="searchbar" />
+            <input onChange={onChange} type="text" name={name ?? "searchbar"} />
         </div>
     )
 }

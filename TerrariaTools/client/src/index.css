@@ -16,7 +16,8 @@ code {
     margin: 1rem;
 }
 
-.searchbar {
+.searchbar,
+select {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
