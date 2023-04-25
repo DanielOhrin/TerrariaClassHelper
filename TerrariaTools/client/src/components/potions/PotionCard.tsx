@@ -1,34 +1,33 @@
 import { Button, ButtonGroup, Card, CardBody, CardTitle } from "reactstrap"
 import { Potion } from "../../modules/types/potion"
-import { useCallback, useState } from "react"
+import { useCallback } from "react"
 
 interface PotionCardProps {
-    potion: Potion
+    potion: Potion,
+    forceRenderParent: Function
 }
 
-function PotionCard({ potion }: PotionCardProps) {
-    const [amountCrafted, setAmountCrafted] = useState<number>(potion.getAmountCrafted())
-
+function PotionCard({ potion, forceRenderParent }: PotionCardProps) {
     const add = useCallback(() => {
         potion.setAmount(potion.getAmount() + 1)
-        setAmountCrafted(potion.getAmountCrafted())
-    }, [potion])
+        forceRenderParent()
+    }, [potion, forceRenderParent])
 
     const subtract = useCallback(() => {
         const amount = potion.getAmount()
 
         if (amount > 0) {
             potion.setAmount(amount - 1)
-            setAmountCrafted(potion.getAmountCrafted())
+            forceRenderParent()
         }
-    }, [potion])
+    }, [potion, forceRenderParent])
 
     return (
         <Card className="potion--card">
             <img className="potion--img" src={potion.imageUrl} alt="" />
             <CardBody className="potion--card-body">
                 <CardTitle tag="h5">{potion.name}</CardTitle>
-                <h4>{amountCrafted}</h4>
+                <h4>{potion.getAmountCrafted()}</h4>
                 <ButtonGroup className="potion--card--buttons">
                     <Button onClick={subtract}>-</Button>
                     <Button onClick={add}>+</Button>

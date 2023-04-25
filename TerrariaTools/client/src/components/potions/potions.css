@@ -36,3 +36,12 @@
 .potion--card--buttons > button {
     margin: 10px;
 }
+
+#potions--aside {
+    position: fixed;
+    right: 0;
+    top: 25%;
+    height: 50%;
+    width: 17.5%;
+    border: 1px solid black;
+}
