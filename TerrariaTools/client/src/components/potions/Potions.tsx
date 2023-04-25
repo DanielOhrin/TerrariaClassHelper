@@ -34,7 +34,7 @@ function Potions() {
     return (
         <section id="potions--section">
             <h2>Potions</h2>
-            <article id={showSidebar ? "potions--article--left" : "potions--article--center"}>
+            <article id={showSidebar ? "potions--article-left" : "potions--article-center"}>
                 {
                     potions.map(potion => <PotionCard potion={potion} forceRenderParent={forceRender} />)
                 }

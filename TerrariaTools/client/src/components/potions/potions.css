@@ -4,13 +4,13 @@
     align-items: center;
 }
 
-#potions--article--center {
+#potions--article-center {
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
 }
 
-#potions--article--left {
+#potions--article-left {
     display: flex;
     flex-flow: row wrap;
 }
