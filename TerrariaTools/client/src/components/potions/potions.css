@@ -4,14 +4,19 @@
     align-items: center;
 }
 
-#potions--article {
+#potions--article--center {
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
 }
 
+#potions--article--left {
+    display: flex;
+    flex-flow: row wrap;
+}
+
 .potion--card {
-    width: 15%;
+    flex: 0 1 15%;
     margin: 0.5rem 1rem;
 }
 
@@ -39,9 +44,29 @@
 
 #potions--aside {
     position: fixed;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
     right: 0;
     top: 25%;
     height: 50%;
-    width: 17.5%;
+    width: 15%;
     border: 1px solid black;
+    overflow: auto;
+    margin-right: 1.25%;
+}
+
+#potions--aside-list {
+    overflow: auto;
+    height: 90%;
+    width: 100%;
+    border-bottom: 1px solid black;
+    padding: 4px;
+}
+
+#potions--aside > button {
+    border-radius: 0;
+    margin: auto;
+    width: 100%;
+    flex-grow: 1;
 }

@@ -8,6 +8,7 @@ import { Potion } from "../../modules/types/potion"
 import { useCallback, useEffect, useState } from "react"
 import PotionCard from "./PotionCard"
 import { getPotions } from "../../modules/database/potions-manager"
+import { Button } from "reactstrap"
 import "./potions.css"
 
 function Potions() {
@@ -33,11 +34,7 @@ function Potions() {
     return (
         <section id="potions--section">
             <h2>Potions</h2>
-            {/*
-             //* These should be align-left when the aside is active!!
-             //* Make it animated, so it doesn't just snap them to the side or appear. It should come in from the right side of the screen, and the potions should slowly move left.
-            */}
-            <article id="potions--article">
+            <article id={showSidebar ? "potions--article--left" : "potions--article--center"}>
                 {
                     potions.map(potion => <PotionCard potion={potion} forceRenderParent={forceRender} />)
                 }
@@ -45,7 +42,10 @@ function Potions() {
             {
                 showSidebar &&
                 <aside id="potions--aside" /* sidebar */ >
-                    Hi this is text on a screen LOL!
+                    <section id="potions--aside-list">
+                        {potions.map(potion => potion.getAmount() > 0 ? <div>{potion.name}: {potion.getAmountCrafted()}x</div> : <></>)}
+                    </section>
+                    <Button color="primary">Calculate Ingredients</Button>
                 </aside>
             }
         </section>
@@ -53,8 +53,3 @@ function Potions() {
 }
 
 export default Potions
-
-interface sidebarPotion {
-    name: string,
-    amountCrafted: number
-}
