@@ -4,13 +4,15 @@
 // Each potion will be in a <Potion> component.
 // Maybe try to make a HoC because I'm sure we will have many lists of items. 
 // Have the potions be little cards with plus and minus signs on them when calculating ingredients.
-import { Potion } from "../../modules/types/potion"
+import { Potion, PotionCategoryId } from "../../modules/types/potion"
 import { ChangeEvent, useCallback, useEffect, useState } from "react"
 import PotionCard from "./PotionCard"
 import { getPotions } from "../../modules/database/potions-manager"
 import { Button } from "reactstrap"
 import "./potions.css"
 import Searchbar from "../../helpers/Searchbar"
+import Select from "../../helpers/Select"
+import { getEnumValues } from "../../modules/functions/get-enum-values"
 
 function Potions() {
     const [potions, setPotions] = useState<Potion[]>([]),
@@ -38,11 +40,14 @@ function Potions() {
 
         setShowSidebar(selectedPotions.length > 0)
     }, [potions])
-
+    console.log(typeof PotionCategoryId)
     return (
         <section id="potions--section">
             <h2>Potions</h2>
-            <Searchbar label="Search for Potions" onChange={onSearchChange} />
+            <section id="potions-filters--section">
+                <Searchbar label="Search for Potions" onChange={onSearchChange} />
+                <Select onChange={() => { return }} values={getEnumValues(PotionCategoryId)} />
+            </section>
             <article id={showSidebar ? "potions--article-left" : "potions--article-center"}>
                 {
                     filteredPotions.map(potion => <PotionCard potion={potion} forceRenderParent={forceRender} />)

@@ -5,6 +5,18 @@
     align-items: center;
 }
 
+#potions-filters--section {
+    display: flex;
+    flex-wrap: nowrap;
+    width: inherit;
+    align-items: center;
+    justify-content: center;
+}
+
+#potions-filters--section > * {
+    margin-left: 6px;
+}
+
 #potions--article-center {
     width: 100%;
     display: flex;
