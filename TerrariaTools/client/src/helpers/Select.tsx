@@ -7,9 +7,10 @@ interface SelectProps {
     id?: string
     values: { label: string, value: string }[]
     defaultValue?: { label: string },
+    name: string
 }
 
-function Select({ label, onChange, className, id, values, defaultValue }: SelectProps) {
+function Select({ label, onChange, className, id, values, defaultValue, name }: SelectProps) {
     const generateOptions = useCallback((): JSX.Element[] => {
         const options: JSX.Element[] = []
 
@@ -17,18 +18,18 @@ function Select({ label, onChange, className, id, values, defaultValue }: Select
             options.push(<option value="" hidden>{defaultValue.label}</option>)
         }
 
-        values.forEach(obj => options.push(<option value={obj.value}>{obj.label}</option>))
+        values.forEach((obj, i) => options.push(<option key={`${name}--option-${i}`} value={obj.value}>{obj.label}</option>))
 
         return options
-    }, [values, defaultValue])
+    }, [values, defaultValue, name])
 
     return (
-        <div id={id} className={`select${(" " + className ?? "")}`}>
+        <div id={id} className={`select${className ? " " + className : ""}`}>
             {
                 label &&
-                <label htmlFor="select">{label}</label>
+                <label htmlFor={name}>{label}</label>
             }
-            <select onChange={e => onChange(e)} name="select">
+            <select onChange={e => onChange(e)} name={name}>
                 {generateOptions()}
             </select>
         </div>

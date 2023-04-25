@@ -17,16 +17,28 @@ import { getEnumValues } from "../../modules/functions/get-enum-values"
 function Potions() {
     const [potions, setPotions] = useState<Potion[]>([]),
         [filteredPotions, setFilteredPotions] = useState<Potion[]>([]),
+        [potionCategoryId, setPotionCategoryId] = useState<PotionCategoryId | 0>(0),
+        [searchValue, setSearchValue] = useState<string>(""),
         [showSidebar, setShowSidebar] = useState<Boolean>(false)
 
     const forceRender = useCallback(() => {
         setPotions([...potions])
     }, [potions])
 
-    const onSearchChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setFilteredPotions(potions.filter(potion => potion.name.toLowerCase().includes(e.target.value.toLowerCase())))
+    /**
+     * @param name Text to filter potions by name
+     * @param categoryId PotionCategoryId or 0 to filter potions by
+     * @updates filteredPotions state
+     */
+    const filterPotions = useCallback((name: string, categoryId: PotionCategoryId | 0): void => {
+        let potionArray: Potion[] = [...potions]
+
+        potionArray = potionArray.filter(potion => potion.name.toLowerCase().includes(name.toLowerCase().trim()))
+
+        setFilteredPotions(categoryId !== 0 ? potionArray.filter(potion => potion.categoryId === categoryId) : potionArray)
     }, [potions])
 
+    //! Initial data fetching
     useEffect(() => {
         getPotions().then(data => {
             const basePotions = data.filter(potion => potion.potionRecipes.length).map(potion => new Potion({ ...potion }))
@@ -35,18 +47,28 @@ function Potions() {
         })
     }, [])
 
+    //! Filter potions
+    useEffect(() => {
+        filterPotions(searchValue, potionCategoryId)
+    }, [searchValue, potionCategoryId, filterPotions])
+
+    //! Check whether or not to show the sidebar
     useEffect(() => {
         const selectedPotions: Potion[] = potions.filter(potion => potion.getAmount() > 0)
 
         setShowSidebar(selectedPotions.length > 0)
     }, [potions])
-    console.log(typeof PotionCategoryId)
+
     return (
         <section id="potions--section">
             <h2>Potions</h2>
             <section id="potions-filters--section">
-                <Searchbar label="Search for Potions" onChange={onSearchChange} />
-                <Select onChange={() => { return }} values={getEnumValues(PotionCategoryId)} />
+                <Searchbar label="Search for Potions" onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)} />
+                <Select
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setPotionCategoryId(parseInt(e.target.value))}
+                    values={[{ label: "All", value: "0" }, ...getEnumValues(PotionCategoryId)]}
+                    name={"select"}
+                    label={"Category"} />
             </section>
             <article id={showSidebar ? "potions--article-left" : "potions--article-center"}>
                 {
