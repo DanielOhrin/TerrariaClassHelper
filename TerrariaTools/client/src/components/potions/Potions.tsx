@@ -5,23 +5,31 @@
 // Maybe try to make a HoC because I'm sure we will have many lists of items. 
 // Have the potions be little cards with plus and minus signs on them when calculating ingredients.
 import { Potion } from "../../modules/types/potion"
-import { useCallback, useEffect, useState } from "react"
+import { ChangeEvent, useCallback, useEffect, useState } from "react"
 import PotionCard from "./PotionCard"
 import { getPotions } from "../../modules/database/potions-manager"
 import { Button } from "reactstrap"
 import "./potions.css"
+import Searchbar from "../../helpers/Searchbar"
 
 function Potions() {
     const [potions, setPotions] = useState<Potion[]>([]),
+        [filteredPotions, setFilteredPotions] = useState<Potion[]>([]),
         [showSidebar, setShowSidebar] = useState<Boolean>(false)
 
     const forceRender = useCallback(() => {
         setPotions([...potions])
     }, [potions])
 
+    const onSearchChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        setFilteredPotions(potions.filter(potion => potion.name.toLowerCase().includes(e.target.value.toLowerCase())))
+    }, [potions])
+
     useEffect(() => {
         getPotions().then(data => {
-            setPotions(data.filter(potion => potion.potionRecipes.length).map(potion => new Potion({ ...potion })))
+            const basePotions = data.filter(potion => potion.potionRecipes.length).map(potion => new Potion({ ...potion }))
+            setPotions(basePotions)
+            setFilteredPotions(basePotions)
         })
     }, [])
 
@@ -34,9 +42,10 @@ function Potions() {
     return (
         <section id="potions--section">
             <h2>Potions</h2>
+            <Searchbar label="Search for Potions" onChange={onSearchChange} />
             <article id={showSidebar ? "potions--article-left" : "potions--article-center"}>
                 {
-                    potions.map(potion => <PotionCard potion={potion} forceRenderParent={forceRender} />)
+                    filteredPotions.map(potion => <PotionCard potion={potion} forceRenderParent={forceRender} />)
                 }
             </article>
             {

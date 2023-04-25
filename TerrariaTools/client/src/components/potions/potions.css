@@ -1,16 +1,19 @@
 #potions--section {
+    width: 100%;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
 }
 
 #potions--article-center {
+    width: 100%;
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
 }
 
 #potions--article-left {
+    width: 100%;
     display: flex;
     flex-flow: row wrap;
 }
