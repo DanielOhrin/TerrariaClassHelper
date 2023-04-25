@@ -1,8 +1,8 @@
 #potions--section {
+    width: 100%;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    width: 100%;
 }
 
 #potions--article-center {
