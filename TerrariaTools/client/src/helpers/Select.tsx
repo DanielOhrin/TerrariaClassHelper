@@ -8,9 +8,10 @@ interface SelectProps {
     values: { label: string, value: string }[]
     defaultValue?: { label: string },
     name: string
+    value?: string | number
 }
 
-function Select({ label, onChange, className, id, values, defaultValue, name }: SelectProps) {
+function Select({ label, onChange, className, id, values, defaultValue, name, value }: SelectProps) {
     const generateOptions = useCallback((): JSX.Element[] => {
         const options: JSX.Element[] = []
 
@@ -29,7 +30,7 @@ function Select({ label, onChange, className, id, values, defaultValue, name }: 
                 label &&
                 <label htmlFor={name}>{label}</label>
             }
-            <select onChange={e => onChange(e)} name={name}>
+            <select onChange={e => onChange(e)} name={name} value={value}>
                 {generateOptions()}
             </select>
         </div>
