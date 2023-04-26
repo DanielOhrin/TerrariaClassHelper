@@ -170,7 +170,7 @@ INSERT INTO dbo.PotionRecipe (Amount, PotionId, CraftingStationId)
 			(1, 17, 1),
 			(1, 18, 1),
 			(1, 19, 1),
-			(1, 20, 1),
+			(1, 19, 1),
 			(1, 20, 1),
 			(1, 21, 1),
 			(1, 22, 1),
