@@ -7,12 +7,13 @@
 import { Potion, PotionCategoryId } from "../../modules/types/potion"
 import { ChangeEvent, useCallback, useEffect, useState } from "react"
 import PotionCard from "./PotionCard"
-import { getPotions } from "../../modules/database/potions-manager"
+import { getPotions } from "../../modules/database/potionsManager"
 import { Button } from "reactstrap"
 import "./potions.css"
 import Searchbar from "../../helpers/Searchbar"
 import Select from "../../helpers/Select"
-import { getEnumValues } from "../../modules/functions/get-enum-values"
+import { getEnumValues } from "../../modules/functions/getEnumValues"
+import { calculatePotionIngredients } from "../../modules/functions/calculatePotionIngredients"
 
 function Potions() {
     const [potions, setPotions] = useState<Potion[]>([]),

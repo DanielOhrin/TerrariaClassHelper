@@ -1,4 +1,4 @@
-import { CraftingStation } from "./crafting-station"
+import { CraftingStation } from "./craftingStation"
 import { Material } from "./material"
 
 export enum PotionCategoryId {
