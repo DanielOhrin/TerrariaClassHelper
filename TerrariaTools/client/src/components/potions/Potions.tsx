@@ -25,6 +25,14 @@ function Potions() {
         setPotions([...potions])
     }, [potions])
 
+    const resetState = useCallback(() => {
+        potions.forEach(potion => potion.setAmount(0))
+
+        setSearchValue("")
+        setPotionCategoryId(0)
+        setShowSidebar(false)
+    }, [potions])
+
     /**
      * @param name Text to filter potions by name
      * @param categoryId PotionCategoryId or 0 to filter potions by
@@ -63,12 +71,17 @@ function Potions() {
         <section id="potions--section">
             <h2>Potions</h2>
             <section id="potions-filters--section">
-                <Searchbar label="Search for Potions" onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)} />
+                <Searchbar
+                    label="Search for Potions"
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)}
+                    value={searchValue} />
                 <Select
                     onChange={(e: ChangeEvent<HTMLSelectElement>) => setPotionCategoryId(parseInt(e.target.value))}
                     values={[{ label: "All", value: "0" }, ...getEnumValues(PotionCategoryId)]}
                     name={"select"}
-                    label={"Category"} />
+                    label={"Category"}
+                    value={potionCategoryId} />
+                <Button onClick={resetState}>Reset</Button>
             </section>
             <article id={showSidebar ? "potions--article-left" : "potions--article-center"}>
                 {
