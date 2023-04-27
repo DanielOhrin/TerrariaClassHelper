@@ -1,9 +1,3 @@
-// Here, have a list of all potions that you can filter by certain things, such as game stage, type (battle, utility), etc.
-// Maybe if a user is logged in, they can make their own list of potions.
-// Have a link/button somewhere on the page to "Ingredient Calculator"
-// Each potion will be in a <Potion> component.
-// Maybe try to make a HoC because I'm sure we will have many lists of items. 
-// Have the potions be little cards with plus and minus signs on them when calculating ingredients.
 import { Potion, PotionCategoryId } from "../../modules/types/potion"
 import { ChangeEvent, useCallback, useEffect, useState } from "react"
 import PotionCard from "./PotionCard"
@@ -95,7 +89,7 @@ function Potions() {
                     <section id="potions--aside-list">
                         {potions.map(potion => potion.getAmount() > 0 ? <div>{potion.name}: {potion.getAmountCrafted()}x</div> : <></>)}
                     </section>
-                    <Button color="primary">Calculate Ingredients</Button>
+                    <Button color="primary" onClick={() => console.log(calculatePotionIngredients(potions))}>Calculate Ingredients</Button>
                 </aside>
             }
         </section>

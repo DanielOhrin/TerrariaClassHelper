@@ -46,7 +46,7 @@ INSERT INTO dbo.Material ([Name], ImageUrl, IsHardmode)
 			('Flarefin Koi', 'https://static.wikia.nocookie.net/terraria_gamepedia/images/f/f8/Flarefin_Koi.png', 0),
 			('Obsidifish', 'https://static.wikia.nocookie.net/terraria_gamepedia/images/5/5f/Obsidifish.png', 0),
 			('Iron Ore', 'https://static.wikia.nocookie.net/terraria_gamepedia/images/8/87/Iron_Ore.png', 0),
-			('Lead ore', 'https://static.wikia.nocookie.net/terraria_gamepedia/images/2/2e/Lead_Ore.png', 0),
+			('Lead Ore', 'https://static.wikia.nocookie.net/terraria_gamepedia/images/2/2e/Lead_Ore.png', 0),
 			('White Pearl', 'https://static.wikia.nocookie.net/terraria_gamepedia/images/e/e2/White_Pearl.png', 0),
 			('Prismite', 'https://static.wikia.nocookie.net/terraria_gamepedia/images/b/bf/Prismite.png', 1),
 			('Princess Fish', 'https://static.wikia.nocookie.net/terraria_gamepedia/images/6/69/Princess_Fish.png', 1),
