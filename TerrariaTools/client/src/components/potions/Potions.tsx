@@ -2,7 +2,7 @@ import { Potion, PotionCategoryId } from "../../modules/types/potion"
 import { ChangeEvent, useCallback, useEffect, useState } from "react"
 import PotionCard from "./PotionCard"
 import { getPotions } from "../../modules/database/potionsManager"
-import { Button } from "reactstrap"
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap"
 import "./potions.css"
 import Searchbar from "../../helpers/Searchbar"
 import Select from "../../helpers/Select"
@@ -14,8 +14,9 @@ function Potions() {
         [filteredPotions, setFilteredPotions] = useState<Potion[]>([]),
         [potionCategoryId, setPotionCategoryId] = useState<PotionCategoryId | 0>(0),
         [onlyHardmode, setOnlyHardmode] = useState<Boolean | null>(null),
-        [searchValue, setSearchValue] = useState<string>(""),
-        [showSidebar, setShowSidebar] = useState<Boolean>(false)
+        [searchValue, setSearchValue] = useState(""),
+        [showSidebar, setShowSidebar] = useState(false),
+        [showModal, setShowModal] = useState(false)
 
     const forceRender = useCallback(() => {
         setPotions([...potions])
@@ -86,7 +87,9 @@ function Potions() {
                     onChange={(e: ChangeEvent<HTMLSelectElement>) => setOnlyHardmode(e.target.value === "" ? null : e.target.value === "1")}
                     values={[{ label: "All", value: "" }, { label: "Pre-Hardmode", value: "0" }, { label: "Hardmode", value: "1" }]}
                     name="select"
-                    label="Game Stage" />
+                    label="Game Stage"
+                    value={onlyHardmode === null ? "" : onlyHardmode ? "1" : "0"}
+                />
                 <Button onClick={resetState}>Reset</Button>
             </section>
             <article id={showSidebar ? "potions--article-left" : "potions--article-center"}>
@@ -100,9 +103,38 @@ function Potions() {
                     <section id="potions--aside-list">
                         {potions.map(potion => potion.getAmount() > 0 ? <div>{potion.name}: {potion.getAmountCrafted()}x</div> : <></>)}
                     </section>
-                    <Button color="primary" onClick={() => console.log(calculatePotionIngredients(potions))}>Calculate Ingredients</Button>
+                    <Button color="primary" onClick={() => setShowModal(!showModal)}>Calculate Ingredients</Button>
                 </aside>
             }
+            <Modal isOpen={showModal} toggle={() => setShowModal(!showModal)}>
+                <ModalHeader toggle={() => setShowModal(!showModal)}>Ingredients</ModalHeader>
+                <ModalBody>
+                    {
+                        calculatePotionIngredients(potions)
+                            .sort((a, b) => b.amount - a.amount)
+                            .map((ingredient, i, arr) => {
+                                if (ingredient.group) {
+                                    const matchingGroupIngredients = arr.filter(ing => ing.group === ingredient.group)
+
+                                    if (matchingGroupIngredients[0] === ingredient) return <></>;
+
+                                    return (
+                                        <div className="potion-ingredient--div">{ingredient.amount}x {matchingGroupIngredients.map(ing => ing.material.name).join(" or ")}</div>
+                                    )
+                                }
+
+                                return (
+                                    <div className="potion-ingredient--div">
+                                        {ingredient.amount}x {ingredient.material.name}
+                                    </div>
+                                )
+                            })
+                    }
+                </ModalBody>
+                {/* <ModalFooter>
+                    //TODO Add buttons, such as "Copy," "Close," etc.
+                </ModalFooter> */}
+            </Modal>
         </section>
     )
 }
