@@ -1,4 +1,6 @@
-﻿namespace TerrariaTools.Data.Models.Generated;
+﻿using System.Text.Json.Serialization;
+
+namespace TerrariaTools.Data.Models.Generated;
 
 public partial class PotionIngredient
 {
@@ -14,6 +16,7 @@ public partial class PotionIngredient
 
     public virtual Material? Ingredient { get; set; }
 
+    [JsonIgnore]
     public virtual Potion? Potion { get; set; }
 
     public virtual PotionRecipe? PotionRecipe { get; set; }

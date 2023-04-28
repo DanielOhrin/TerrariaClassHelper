@@ -13,6 +13,7 @@ function Potions() {
     const [potions, setPotions] = useState<Potion[]>([]),
         [filteredPotions, setFilteredPotions] = useState<Potion[]>([]),
         [potionCategoryId, setPotionCategoryId] = useState<PotionCategoryId | 0>(0),
+        [onlyHardmode, setOnlyHardmode] = useState<Boolean | null>(null),
         [searchValue, setSearchValue] = useState<string>(""),
         [showSidebar, setShowSidebar] = useState<Boolean>(false)
 
@@ -33,10 +34,14 @@ function Potions() {
      * @param categoryId PotionCategoryId or 0 to filter potions by
      * @updates filteredPotions state
      */
-    const filterPotions = useCallback((name: string, categoryId: PotionCategoryId | 0): void => {
+    const filterPotions = useCallback((name: string, categoryId: PotionCategoryId | 0, onlyHardmode: Boolean | null): void => {
         let potionArray: Potion[] = [...potions]
 
         potionArray = potionArray.filter(potion => potion.name.toLowerCase().includes(name.toLowerCase().trim()))
+
+        if (onlyHardmode !== null) {
+            potionArray = potionArray.filter(potion => potion.getRecipesForOne().every(recipe => onlyHardmode ? recipe.potionIngredients.some(ingredient => ingredient.ingredient?.isHardmode ?? ingredient.potion) : recipe.potionIngredients.every(ingredient => !ingredient.ingredient?.isHardmode ?? ingredient.potion)))
+        }
 
         setFilteredPotions(categoryId !== 0 ? potionArray.filter(potion => potion.categoryId === categoryId) : potionArray)
     }, [potions])
@@ -52,8 +57,8 @@ function Potions() {
 
     //! Filter potions
     useEffect(() => {
-        filterPotions(searchValue, potionCategoryId)
-    }, [searchValue, potionCategoryId, filterPotions])
+        filterPotions(searchValue, potionCategoryId, onlyHardmode)
+    }, [searchValue, potionCategoryId, onlyHardmode, filterPotions])
 
     //! Check whether or not to show the sidebar
     useEffect(() => {
@@ -73,9 +78,14 @@ function Potions() {
                 <Select
                     onChange={(e: ChangeEvent<HTMLSelectElement>) => setPotionCategoryId(parseInt(e.target.value))}
                     values={[{ label: "All", value: "0" }, ...getEnumValues(PotionCategoryId)]}
-                    name={"select"}
-                    label={"Category"}
+                    name="select"
+                    label="Category"
                     value={potionCategoryId} />
+                <Select
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setOnlyHardmode(e.target.value === "" ? null : e.target.value === "1")}
+                    values={[{ label: "All", value: "" }, { label: "Pre-Hardmode", value: "0" }, { label: "Hardmode", value: "1" }]}
+                    name="select"
+                    label="Game Stage" />
                 <Button onClick={resetState}>Reset</Button>
             </section>
             <article id={showSidebar ? "potions--article-left" : "potions--article-center"}>
