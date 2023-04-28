@@ -70,6 +70,14 @@ export class Potion {
 
     /**
      * 
+     * @returns The recipe(s) for a single craft of this potion
+     */
+    getRecipesForOne(): PotionRecipe[] {
+        return this.recipes
+    }
+
+    /**
+     * 
      * @param amount Amount of times to craft the potion
      */
     setAmount(amount: number): void {
