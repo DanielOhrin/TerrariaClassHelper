@@ -87,7 +87,9 @@ function Potions() {
                     onChange={(e: ChangeEvent<HTMLSelectElement>) => setOnlyHardmode(e.target.value === "" ? null : e.target.value === "1")}
                     values={[{ label: "All", value: "" }, { label: "Pre-Hardmode", value: "0" }, { label: "Hardmode", value: "1" }]}
                     name="select"
-                    label="Game Stage" />
+                    label="Game Stage"
+                    value={onlyHardmode === null ? "" : onlyHardmode ? "1" : "0"}
+                />
                 <Button onClick={resetState}>Reset</Button>
             </section>
             <article id={showSidebar ? "potions--article-left" : "potions--article-center"}>
