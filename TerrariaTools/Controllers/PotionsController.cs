@@ -25,6 +25,8 @@ namespace TerrariaTools.Controllers
             .AsNoTracking()
             .ToListAsync();
 
+
+            //! Second query to avoid a cycle
             List<PotionIngredient> ingredients = potions
                 .SelectMany(potion => potion.PotionRecipes.SelectMany(recipe => recipe.PotionIngredients.Where(ing => ing.PotionId != null)))
                 .ToList();

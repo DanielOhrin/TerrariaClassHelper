@@ -395,7 +395,7 @@ INSERT INTO dbo.PotionIngredient (Amount, IngredientId, PotionId, PotionRecipeId
 			(3, 1, NULL, 57),
 			(3, 56, NULL, 57),
 			(1, 57, NULL, 57),
-			(4, NULL, 57, 58),
+			(4, NULL, 54, 58),
 			(1, 59, NULL, 58),
 			(1, 60, NULL, 58),
 			(1, 61, NULL, 58),
