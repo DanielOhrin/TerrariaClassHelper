@@ -26,6 +26,7 @@ function Potions() {
 
         setSearchValue("")
         setPotionCategoryId(0)
+        setOnlyHardmode(null)
         setShowSidebar(false)
     }, [potions])
 
@@ -40,7 +41,7 @@ function Potions() {
         potionArray = potionArray.filter(potion => potion.name.toLowerCase().includes(name.toLowerCase().trim()))
 
         if (onlyHardmode !== null) {
-            potionArray = potionArray.filter(potion => potion.getRecipesForOne().every(recipe => onlyHardmode ? recipe.potionIngredients.some(ingredient => ingredient.ingredient?.isHardmode ?? ingredient.potion) : recipe.potionIngredients.every(ingredient => !ingredient.ingredient?.isHardmode ?? ingredient.potion)))
+            potionArray = potionArray.filter(potion => potion.getRecipesForOne().every(recipe => onlyHardmode ? recipe.potionIngredients.some(ingredient => ingredient.ingredient?.isHardmode) : recipe.potionIngredients.every(ingredient => !ingredient.ingredient?.isHardmode)))
         }
 
         setFilteredPotions(categoryId !== 0 ? potionArray.filter(potion => potion.categoryId === categoryId) : potionArray)
