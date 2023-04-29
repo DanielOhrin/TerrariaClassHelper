@@ -101,7 +101,15 @@ function Potions() {
                 showSidebar &&
                 <aside id="potions--aside" /* sidebar */ >
                     <section id="potions--aside-list">
-                        {potions.map(potion => potion.getAmount() > 0 ? <div>{potion.name}: {potion.getAmountCrafted()}x</div> : <></>)}
+                        {potions.map(potion =>
+                            potion.getAmount() > 0
+                                ? (
+                                    <div>
+                                        <img className="potion--inline-img" src={potion.imageUrl} alt="" />
+                                        {potion.name}: {potion.getAmountCrafted()}x
+                                    </div>
+                                ) : <></>
+                        )}
                     </section>
                     <Button color="primary" onClick={() => setShowModal(!showModal)}>Calculate Ingredients</Button>
                 </aside>
@@ -119,13 +127,17 @@ function Potions() {
                                     if (matchingGroupIngredients[0] === ingredient) return <></>;
 
                                     return (
-                                        <div className="potion-ingredient--div">{ingredient.amount}x {matchingGroupIngredients.map(ing => ing.material.name).join(" or ")}</div>
+                                        <div className="potion-ingredient--div">
+                                            {ingredient.amount}x {matchingGroupIngredients.map(ing => ing.material.name).join(" or ")}
+                                            {matchingGroupIngredients.map(ing => <img className="potion--inline-img" src={ing.material.imageUrl} alt="" />)}
+                                        </div>
                                     )
                                 }
 
                                 return (
                                     <div className="potion-ingredient--div">
                                         {ingredient.amount}x {ingredient.material.name}
+                                        <img className="potion--inline-img" src={ingredient.material.imageUrl} alt="" />
                                     </div>
                                 )
                             })
