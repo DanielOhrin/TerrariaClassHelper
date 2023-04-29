@@ -214,7 +214,7 @@ GO
 
 
 INSERT INTO dbo.PotionIngredient (Amount, IngredientId, PotionId, PotionRecipeId)
-	VALUES	(1, 1, 1, 1),
+	VALUES	(1, 1, NULL, 1),
 			(1, 2, NULL, 1),
 			(1, 3, NULL, 1),
 			(1, 1, NULL, 2),

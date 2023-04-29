@@ -85,3 +85,9 @@
     width: 100%;
     flex-grow: 1;
 }
+
+.potion--inline-img {
+    max-height: 20px;
+    max-width: 20px;
+    margin: 0 4px;
+}
