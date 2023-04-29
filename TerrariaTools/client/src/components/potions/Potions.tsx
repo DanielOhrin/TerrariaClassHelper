@@ -127,7 +127,7 @@ function Potions() {
                                     if (matchingGroupIngredients[0] === ingredient) return <></>;
 
                                     return (
-                                        <div className="potion-ingredient--div">
+                                        <div>
                                             {ingredient.amount}x {matchingGroupIngredients.map(ing => ing.material.name).join(" or ")}
                                             {matchingGroupIngredients.map(ing => <img className="potion--inline-img" src={ing.material.imageUrl} alt="" />)}
                                         </div>
@@ -135,7 +135,7 @@ function Potions() {
                                 }
 
                                 return (
-                                    <div className="potion-ingredient--div">
+                                    <div>
                                         {ingredient.amount}x {ingredient.material.name}
                                         <img className="potion--inline-img" src={ingredient.material.imageUrl} alt="" />
                                     </div>
