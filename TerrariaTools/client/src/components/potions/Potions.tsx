@@ -1,5 +1,5 @@
 import { Potion, PotionCategoryId } from "../../modules/types/potion"
-import { ChangeEvent, useCallback, useEffect, useState } from "react"
+import { ChangeEvent, useCallback, useEffect, useState, useRef } from "react"
 import PotionCard from "./PotionCard"
 import { getPotions } from "../../modules/database/potionsManager"
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap"
@@ -8,6 +8,7 @@ import Searchbar from "../../helpers/Searchbar"
 import Select from "../../helpers/Select"
 import { getEnumValues } from "../../modules/functions/getEnumValues"
 import { calculatePotionIngredients } from "../../modules/functions/calculatePotionIngredients"
+import copyToClipboard from "../../modules/functions/copyToClipboard"
 
 function Potions() {
     const [potions, setPotions] = useState<Potion[]>([]),
@@ -16,7 +17,8 @@ function Potions() {
         [onlyHardmode, setOnlyHardmode] = useState<Boolean | null>(null),
         [searchValue, setSearchValue] = useState(""),
         [showSidebar, setShowSidebar] = useState(false),
-        [showModal, setShowModal] = useState(false)
+        [showModal, setShowModal] = useState(false),
+        clipboardText = useRef("")
 
     const forceRender = useCallback(() => {
         setPotions([...potions])
@@ -30,6 +32,60 @@ function Potions() {
         setOnlyHardmode(null)
         setShowSidebar(false)
     }, [potions])
+
+    const getPotionData = useCallback((potions: Potion[], returnType: "JSX" | "plainText"): JSX.Element[] | string => {
+        if (returnType === "JSX") {
+            return calculatePotionIngredients(potions)
+                .sort((a, b) => b.amount - a.amount)
+                .map((ingredient, i, arr) => {
+                    if (ingredient.group) {
+                        const matchingGroupIngredients = arr.filter(ing => ing.group === ingredient.group)
+
+                        if (matchingGroupIngredients[0] === ingredient) return <></>;
+
+                        return (
+                            <div>
+                                {ingredient.amount}x {matchingGroupIngredients.map(ing => ing.material.name).join(" or ")}
+                                {matchingGroupIngredients.map(ing => <img className="potion--inline-img" src={ing.material.imageUrl} alt="" />)}
+                            </div>
+                        )
+                    }
+
+                    return (
+                        <div>
+                            {ingredient.amount}x {ingredient.material.name}
+                            <img className="potion--inline-img" src={ingredient.material.imageUrl} alt="" />
+                        </div>
+                    )
+                })
+        }
+
+        let text = ""
+
+        calculatePotionIngredients(potions)
+            .sort((a, b) => b.amount - a.amount)
+            .forEach((ingredient, i, arr) => {
+                if (ingredient.group) {
+                    const matchingGroupIngredients = arr.filter(ing => ing.group === ingredient.group)
+
+                    if (matchingGroupIngredients[0] === ingredient) return;
+
+                    text
+                        ? text = `${text}
+${ingredient.amount}x ${matchingGroupIngredients.map(ing => ing.material.name).join(" or ")}`
+                        : text = `${ingredient.amount}x ${matchingGroupIngredients.map(ing => ing.material.name).join(" or ")}`
+
+                    return;
+                }
+
+                text
+                    ? text = `${text}
+${ingredient.amount}x ${ingredient.material.name}`
+                    : text = `${ingredient.amount}x ${ingredient.material.name}`
+            })
+
+        return text
+    }, [])
 
     /**
      * @param name Text to filter potions by name
@@ -111,41 +167,26 @@ function Potions() {
                                 ) : <></>
                         )}
                     </section>
-                    <Button color="primary" onClick={() => setShowModal(!showModal)}>Calculate Ingredients</Button>
+                    <Button
+                        color="primary"
+                        onClick={() => {
+                            setShowModal(!showModal)
+                            clipboardText.current = getPotionData(potions, "plainText") as string
+                        }}
+                    >
+                        Calculate Ingredients
+                    </Button>
                 </aside>
             }
             <Modal isOpen={showModal} toggle={() => setShowModal(!showModal)}>
                 <ModalHeader toggle={() => setShowModal(!showModal)}>Ingredients</ModalHeader>
                 <ModalBody>
-                    {
-                        calculatePotionIngredients(potions)
-                            .sort((a, b) => b.amount - a.amount)
-                            .map((ingredient, i, arr) => {
-                                if (ingredient.group) {
-                                    const matchingGroupIngredients = arr.filter(ing => ing.group === ingredient.group)
-
-                                    if (matchingGroupIngredients[0] === ingredient) return <></>;
-
-                                    return (
-                                        <div>
-                                            {ingredient.amount}x {matchingGroupIngredients.map(ing => ing.material.name).join(" or ")}
-                                            {matchingGroupIngredients.map(ing => <img className="potion--inline-img" src={ing.material.imageUrl} alt="" />)}
-                                        </div>
-                                    )
-                                }
-
-                                return (
-                                    <div>
-                                        {ingredient.amount}x {ingredient.material.name}
-                                        <img className="potion--inline-img" src={ingredient.material.imageUrl} alt="" />
-                                    </div>
-                                )
-                            })
-                    }
+                    {getPotionData(potions, "JSX")}
                 </ModalBody>
-                {/* <ModalFooter>
-                    //TODO Add buttons, such as "Copy," "Close," etc.
-                </ModalFooter> */}
+                <ModalFooter>
+                    <Button onClick={() => { copyToClipboard(clipboardText.current); clipboardText.current = "" }}>Copy</Button>
+                    <Button onClick={() => setShowModal(!showModal)}>Close</Button>
+                </ModalFooter>
             </Modal>
         </section>
     )
